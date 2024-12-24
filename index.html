@@ -26,11 +26,13 @@
     <section id="inicio">
         <h1>Taller de Reparaciones Electrónicas AxTech</h1>
         <h4>Bienvenido al Servicio de Atencion al Cliente</h4>
-        <img id="imgP" src="images/icono_principal.webp">
+        <img id="imgP" src="images/principal_icon.jpg">
         <p>Ofrecemos servicios de reparación de celulares y mantenimiento de equipos electrónicos.</p>
-        <img id="img1" src="images/icono_1.webp" alt="Taller de Reparaciones/n">
-        <button onclick="solicitarPresupuesto()">Solicitar Presupuesto</button>
-        <button onclick="agendarCita()">Agendar Cita</button>
+        <Div>
+            <img id="img1" src="images/image2.jpg" alt="Taller de Reparaciones/n">
+            <button onclick="solicitarPresupuesto()">Solicitar Presupuesto</button>
+            <button onclick="agendarCita()">Agendar Cita</button>
+        </Div>
     </section>
 
     <section id="servicios">
@@ -44,22 +46,32 @@
 
     <section id="reservas">
         <h2>Reservas y Citas</h2>
-        <form id="formReserva">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" required>
-            <label for="fecha">Fecha:</label>
-            <input type="date" id="fecha" required>
-            <button type="submit">Reservar Cita</button>
-        </form>
+        <div class="reserva-container">
+            <div class="reserva-form">
+                <form id="formReserva">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" required><br><br>
+                    <label for="detalles">Especificaciones Previas:</label><br><br>
+                    <textarea id="detalles" required></textarea><br><br>
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" required><br><br>
+                    <button type="submit">Reservar Cita</button>
+                </form>
+            </div>
+            <div class="reserva-imagen">
+                <img id="im1" src="images/icono_principal.webp" alt="logo2">
+            </div>
+        </div>
     </section>
+    
 
     <section id="contacto">
         <h2>Contacto</h2>
         <form id="formContacto">
             <label for="email">Email:</label>
-            <input id="eml" type="email" id="email" required>
+            <input id="eml" type="email" id="email" required><br><br>
             <label for="mensaje">Mensaje:</label>
-            <textarea id="mensaje" required></textarea>
+            <textarea id="mensaje" required></textarea><br><br>
             <button type="submit">Enviar Mensaje</button>
         </form>
         <p>Teléfono: +53 56615201</p>
@@ -70,13 +82,13 @@
         <p>Soluciones Electrónicas Pinar del Rio &copy; 2024 Taller de Reparaciones de Celulares</p>
         <p> Síguenos en nuestras redes sociales.</p>
         <div class="social-links">
-            <a href="https://wa.me/5356615201" target="_blank">
+            <a href="https://wa.me/5356615201?text=Hola%20desde%20mi%20sitio%20web!" target="_blank">
                 <img id="ws" src="images/ws.png" alt="Whatsapp">
             </a>
             <a href="https://www.facebook.com/KevinGomezCarmenate" target="_blank">
                 <img id="face" src="images/faces.jpg" alt="Facebook">
             </a>
-            <a href="https://t.me/kevitooh_03?text=Hola%20desde%20mi%20sitio%20web!" target="_blank">
+            <a href="https://t.me/kevitooh_03" target="_blank">
                 <img id="tmg" src="images/tgm.jpg" alt="Telegram">
             </a>
             <a href="https://www.instagram.com/kevitooh_03" target="_blank">
