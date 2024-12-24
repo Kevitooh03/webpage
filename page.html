@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller de Reparaciones</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="menu">
+        <nav>
+            <ul class="list1">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#reservas">Reservas</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li><a href="signin.html">Sign in</a></li>
+                <li><a href="signup.html">Sign up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio">
+        <h1>Taller de Reparaciones Electrónicas AxTech</h1>
+        <h4>Bienvenido al Servicio de Atencion al Cliente</h4>
+        <img id="imgP" src="images/icono_principal.webp">
+        <p>Ofrecemos servicios de reparación de celulares y mantenimiento de equipos electrónicos.</p>
+        <img id="img1" src="images/icono_1.webp" alt="Taller de Reparaciones/n">
+        <button onclick="solicitarPresupuesto()">Solicitar Presupuesto</button>
+        <button onclick="agendarCita()">Agendar Cita</button>
+    </section>
+
+    <section id="servicios">
+        <h2>Servicios Ofrecidos</h2>
+        <ul>
+            <li>Reparación de celulares - Desde $50, Tiempo estimado: 1-2 horas</li>
+            <li>Mantenimiento de computadoras - Desde $30, Tiempo estimado: 2-3 horas</li>
+            <li>Reparación de tablets - Desde $40, Tiempo estimado: 1-2 horas</li>
+        </ul>
+    </section>
+
+    <section id="reservas">
+        <h2>Reservas y Citas</h2>
+        <form id="formReserva">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" required>
+            <button type="submit">Reservar Cita</button>
+        </form>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <form id="formContacto">
+            <label for="email">Email:</label>
+            <input id="eml" type="email" id="email" required>
+            <label for="mensaje">Mensaje:</label>
+            <textarea id="mensaje" required></textarea>
+            <button type="submit">Enviar Mensaje</button>
+        </form>
+        <p>Teléfono: +53 56615201</p>
+        <p>Email: kevingomezcarmenate@gmail.com</p>
+    </section>
+
+    <footer>
+        <p>Soluciones Electrónicas Pinar del Rio &copy; 2024 Taller de Reparaciones de Celulares</p>
+        <p> Síguenos en nuestras redes sociales.</p>
+        <div class="social-links">
+            <a href="https://wa.me/5356615201" target="_blank">
+                <img id="ws" src="images/ws.png" alt="Whatsapp">
+            </a>
+            <a href="https://www.facebook.com/KevinGomezCarmenate" target="_blank">
+                <img id="face" src="images/faces.jpg" alt="Facebook">
+            </a>
+            <a href="https://t.me/kevitooh_03" target="_blank">
+                <img id="tmg" src="images/tgm.jpg" alt="Telegram">
+            </a>
+            <a href="https://www.instagram.com/kevitooh_03" target="_blank">
+                <img id="insta" src="images/insta.jpg" alt="Instagram">
+            </a>
+        </div>
+        <p class="pt"><a href="privacy.html">Política de privacidad</a> | <a href="terms.html">Términos y condiciones</a></p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
