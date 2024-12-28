@@ -12,7 +12,7 @@ document.getElementById('formContacto').addEventListener('submit', function(even
 document.addEventListener("DOMContentLoaded", function(){
     const boton = document.getElementById('ubi');
     boton.onclick = function(){
-        mostrarNotificacion("Aqui esta la ubicacion exacta.");
+        window.open("https://maps.app.goo.gl/nqa7ki4pJiv3pXLi6", "_blank");
     };
 });
 
