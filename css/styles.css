@@ -229,4 +229,9 @@ button:hover {
         height: 150px;
         width: 150px; 
     }
+
+    #map{
+        height: 100px;
+        width: 100px; 
+    }
 }
