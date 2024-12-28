@@ -1,22 +1,19 @@
-function solicitarPresupuesto() {
-    alert("Solicitud de presupuesto enviada. Nos pondremos en contacto pronto.");
-}
-
-function agendarCita() {
-    alert("Por favor, complete el formulario de reservas para agendar su cita.");
-}
-
-// Manejo del envío del formulario de reserva
 document.getElementById('formReserva').addEventListener('submit', function(event) {
     event.preventDefault();
     enviarWhatsApp();
     mostrarNotificacion("Mensaje enviado. Responderemos a la brevedad.");
 });
 
-// Manejo del envío del formulario de contacto
 document.getElementById('formContacto').addEventListener('submit', function(event) {
     event.preventDefault();
     alert("Mensaje enviado. Responderemos a la brevedad.");
+});
+
+document.addEventListener("DOMContentLoaded", function(){
+    const boton = document.getElementById('ubi');
+    boton.onclick = function(){
+        mostrarNotificacion("Aqui esta la ubicacion exacta.");
+    };
 });
 
 function enviarWhatsApp() {
@@ -68,3 +65,4 @@ function mostrarNotificacion(mensaje) {
         notificacion.remove();
     }, 3000);
 }
+
