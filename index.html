@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Asteroides Móvil - Versión Táctil</title>
+    <title>Asteroides Vertical - Control por Giro</title>
     <style>
         * {
             margin: 0;
@@ -28,11 +28,9 @@
             position: relative;
             width: 100vw;
             height: 100vh;
-            max-width: 450px;
+            max-width: 400px;
             max-height: 800px;
-            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 0 30px rgba(74, 111, 165, 0.7);
             background: #0a0f1e;
             margin: auto;
         }
@@ -47,205 +45,88 @@
 
         #ui {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
+            top: 15px;
+            left: 15px;
+            right: 15px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
+            justify-content: space-between;
             z-index: 10;
             pointer-events: none;
+        }
+
+        .ui-left, .ui-right {
+            display: flex;
+            gap: 10px;
         }
 
         .ui-element {
-            background: rgba(0,0,0,0.8);
-            padding: 6px 10px;
-            border-radius: 20px;
-            border: 1px solid #4a6fa5;
-            backdrop-filter: blur(5px);
-            color: white;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-        }
-
-        .power-bar-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.8);
-            border-radius: 15px;
-            padding: 8px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 15px;
+            border-radius: 30px;
             border: 2px solid #4a6fa5;
             backdrop-filter: blur(5px);
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .power-bar-label {
             color: white;
-            font-size: 11px;
-            margin-bottom: 4px;
+            font-size: 16px;
+            font-weight: bold;
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .power-bar {
-            width: 100%;
-            height: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
+        #lives { border-color: #ff6b6b; }
+        #missiles { border-color: #ffaa00; }
+        #score { border-color: #4a6fa5; }
+
+        #difficultyIndicator {
+            position: absolute;
+            top: 80px;
+            left: 15px;
+            right: 15px;
+            height: 6px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 3px;
             overflow: hidden;
-            display: flex;
-            gap: 2px;
-        }
-
-        .power-segment {
-            flex: 1;
-            height: 100%;
-            border-radius: 4px;
-            transition: all 0.3s;
-            opacity: 0.2;
-            background: #4a6fa5;
-        }
-
-        .power-segment.active {
-            opacity: 1;
-            box-shadow: 0 0 10px currentColor;
-        }
-
-        .power-info {
-            color: white;
-            font-size: 11px;
-            margin-top: 4px;
-            text-align: center;
-            padding: 3px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-        }
-
-        #difficultyMeter {
-            position: absolute;
-            bottom: 100px;
-            right: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.8);
-            border-radius: 15px;
-            padding: 8px;
-            border: 2px solid #ff44aa;
-            backdrop-filter: blur(5px);
             z-index: 10;
-            pointer-events: none;
         }
 
-        .difficulty-bar {
-            width: 100%;
-            height: 12px;
+        #difficultyFill {
+            height: 100%;
+            width: 0%;
             background: linear-gradient(90deg, #00ff00, #ffff00, #ff0000);
-            border-radius: 6px;
-            margin-top: 4px;
-            position: relative;
+            border-radius: 3px;
+            transition: width 0.3s;
         }
 
-        .difficulty-indicator {
+        #modeIndicator {
             position: absolute;
-            width: 3px;
-            height: 20px;
-            background: white;
-            top: -4px;
-            transform: translateX(-50%);
-            border-radius: 2px;
-            box-shadow: 0 0 10px white;
-        }
-
-        .mode-indicator {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.8);
-            padding: 6px 12px;
+            top: 100px;
+            left: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 15px;
             border-radius: 20px;
             border: 2px solid #00ffaa;
             color: #00ffaa;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             backdrop-filter: blur(5px);
             z-index: 10;
             pointer-events: none;
         }
 
-        #controls {
+        #powerLevel {
             position: absolute;
-            bottom: 10px;
-            right: 10px;
-            display: flex;
-            gap: 8px;
-            z-index: 20;
-        }
-
-        .control-btn {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: rgba(74, 111, 165, 0.9);
-            border: 3px solid #4a6fa5;
-            color: white;
-            font-size: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            cursor: pointer;
-            touch-action: manipulation;
-            transition: all 0.1s;
-            user-select: none;
+            bottom: 30px;
+            left: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 2px solid #ffaa00;
+            color: #ffaa00;
+            font-size: 16px;
             font-weight: bold;
-        }
-
-        .control-btn:active {
-            transform: scale(0.9);
-            background: #6b8fc5;
-            border-color: #ffaa00;
-        }
-
-        .control-btn.missile {
-            background: rgba(255, 107, 107, 0.9);
-            border-color: #ff6b6b;
-        }
-
-        .control-btn.missile:active {
-            background: #ff8a8a;
-            border-color: #ffaa00;
-        }
-
-        #joystickArea {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            width: 120px;
-            height: 120px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 60px;
-            border: 2px solid #4a6fa5;
             backdrop-filter: blur(5px);
-            z-index: 15;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none;
-        }
-
-        #joystick {
-            width: 50px;
-            height: 50px;
-            background: rgba(74, 111, 165, 0.9);
-            border-radius: 25px;
-            border: 2px solid white;
-            transition: transform 0.05s;
+            z-index: 10;
             pointer-events: none;
         }
 
@@ -257,56 +138,118 @@
             background: rgba(0,0,0,0.95);
             color: white;
             padding: 30px 20px;
-            border-radius: 20px;
+            border-radius: 30px;
             text-align: center;
             display: none;
             border: 3px solid #ff6b6b;
             z-index: 30;
             box-shadow: 0 0 50px rgba(255,107,107,0.5);
-            width: 80%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 320px;
         }
 
         #gameOver h2 {
             margin: 0 0 15px 0;
             color: #ff6b6b;
-            font-size: 36px;
+            font-size: 42px;
+            text-shadow: 0 0 20px #ff6b6b;
         }
 
         #finalScore {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 10px;
             color: #4a6fa5;
         }
 
         #finalStats {
-            font-size: 14px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            margin-bottom: 25px;
             color: #aaa;
-            line-height: 1.6;
+            line-height: 2;
         }
 
         #restartBtn {
             background: #4a6fa5;
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 20px;
-            border-radius: 10px;
+            padding: 18px 40px;
+            font-size: 22px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             border: 2px solid #6b8fc5;
             font-weight: bold;
             width: 100%;
             touch-action: manipulation;
+            box-shadow: 0 8px 0 #2a3f5a;
         }
 
         #restartBtn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #2a3f5a;
+        }
+
+        #touchArea {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50vh;
+            background: transparent;
+            z-index: 15;
+            touch-action: none;
+        }
+
+        #shootHint {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,107,107,0.9);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 0 30px #ff6b6b;
+            animation: pulse 1.5s infinite;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #calibrateBtn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(74,111,165,0.9);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid white;
+            z-index: 40;
+            cursor: pointer;
+            touch-action: manipulation;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        #calibrateBtn:active {
             background: #6b8fc5;
             transform: scale(0.95);
         }
 
-        #orientation-warning {
+        #orientationWarning {
             position: fixed;
             top: 0;
             left: 0;
@@ -320,71 +263,52 @@
             text-align: center;
             padding: 20px;
             z-index: 100;
-            font-size: 18px;
+            font-size: 20px;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        @media (orientation: portrait) {
-            #orientation-warning {
+        @media (orientation: landscape) {
+            #orientationWarning {
                 display: flex;
             }
         }
     </style>
 </head>
 <body>
-    <div id="orientation-warning">
-        Por favor, gira tu dispositivo a horizontal para jugar
+    <div id="orientationWarning">
+        <div>📱 Por favor, gira tu dispositivo a vertical para jugar</div>
+        <div style="font-size: 50px; margin: 20px;">↕️</div>
     </div>
 
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="450" height="800"></canvas>
+        <canvas id="gameCanvas"></canvas>
         
         <div id="ui">
-            <div class="ui-element" id="score">🎯 0</div>
-            <div class="ui-element" id="lives">❤️ 3</div>
-            <div class="ui-element" id="missiles">🚀 0</div>
-            <div class="ui-element" id="powerLevel">⚡ 0/6</div>
-        </div>
-
-        <div class="power-bar-container">
-            <div class="power-bar-label">
-                <span>PODER</span>
-                <span id="powerLevelText">0/6</span>
+            <div class="ui-left">
+                <div class="ui-element" id="lives">❤️ 3</div>
+                <div class="ui-element" id="missiles">🚀 0</div>
             </div>
-            <div class="power-bar" id="powerBar">
-                <div class="power-segment"></div>
-                <div class="power-segment"></div>
-                <div class="power-segment"></div>
-                <div class="power-segment"></div>
-                <div class="power-segment"></div>
-                <div class="power-segment"></div>
-            </div>
-            <div class="power-info" id="powerModeInfo">SIMPLE</div>
-        </div>
-
-        <div id="difficultyMeter">
-            <div style="color: white; font-size: 11px; display: flex; justify-content: space-between;">
-                <span>DIFICULTAD</span>
-                <span id="difficultyPercentage">0%</span>
-            </div>
-            <div class="difficulty-bar">
-                <div class="difficulty-indicator" id="difficultyIndicator" style="left: 0%;"></div>
+            <div class="ui-right">
+                <div class="ui-element" id="score">🎯 0</div>
             </div>
         </div>
 
-        <div class="mode-indicator" id="currentMode">SIMPLE</div>
-
-        <div id="joystickArea">
-            <div id="joystick"></div>
+        <div id="difficultyIndicator">
+            <div id="difficultyFill"></div>
         </div>
 
-        <div id="controls">
-            <div class="control-btn" id="shootBtn">🔫</div>
-            <div class="control-btn missile" id="missileBtn">🚀</div>
-        </div>
+        <div id="modeIndicator">MODO SIMPLE</div>
+        <div id="powerLevel">⚡ NIVEL 0</div>
+
+        <div id="touchArea"></div>
+        <div id="shootHint">¡TOCA AQUÍ PARA DISPARAR!</div>
+
+        <button id="calibrateBtn">🎯</button>
 
         <div id="gameOver">
             <h2>GAME OVER</h2>
-            <div id="finalScore">0</div>
+            <div id="finalScore">Puntuación: 0</div>
             <div id="finalStats"></div>
             <button id="restartBtn">REINICIAR</button>
         </div>
@@ -394,42 +318,36 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
-        // Ajustar canvas al tamaño real
+        // Ajustar canvas
         function resizeCanvas() {
             const container = document.getElementById('gameContainer');
             canvas.width = container.clientWidth;
             canvas.height = container.clientHeight;
             player.x = canvas.width / 2;
-            player.y = canvas.height - 70;
+            player.y = canvas.height - 120;
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
         // Elementos UI
-        const scoreElement = document.getElementById('score');
         const livesElement = document.getElementById('lives');
         const missilesElement = document.getElementById('missiles');
+        const scoreElement = document.getElementById('score');
+        const modeIndicator = document.getElementById('modeIndicator');
         const powerLevelElement = document.getElementById('powerLevel');
-        const powerModeInfo = document.getElementById('powerModeInfo');
-        const currentMode = document.getElementById('currentMode');
-        const difficultyIndicator = document.getElementById('difficultyIndicator');
-        const difficultyPercentage = document.getElementById('difficultyPercentage');
+        const difficultyFill = document.getElementById('difficultyFill');
         const finalScoreElement = document.getElementById('finalScore');
         const finalStatsElement = document.getElementById('finalStats');
         const restartBtn = document.getElementById('restartBtn');
-        const shootBtn = document.getElementById('shootBtn');
-        const missileBtn = document.getElementById('missileBtn');
-        const joystick = document.getElementById('joystick');
-        const joystickArea = document.getElementById('joystickArea');
-
-        // Power bar segments
-        const powerSegments = document.querySelectorAll('.power-segment');
+        const touchArea = document.getElementById('touchArea');
+        const calibrateBtn = document.getElementById('calibrateBtn');
+        const shootHint = document.getElementById('shootHint');
 
         // Jugador
         const player = {
             x: canvas.width / 2,
-            y: canvas.height - 70,
-            radius: 15,
+            y: canvas.height - 120,
+            radius: 20,
             lives: 3,
             missiles: 0,
             powerLevel: 0,
@@ -452,10 +370,11 @@
         let missileCooldown = 0;
         const missileMaxCooldown = 90;
 
-        // Control táctil
-        let touchActive = false;
-        let touchX = player.x;
-        let joystickVector = { x: 0, y: 0 };
+        // Control por giro
+        let beta = 0; // Inclinación izquierda/derecha
+        let calibratedBeta = 0;
+        let deviceOrientationSupported = false;
+        let calibrationOffset = 0;
 
         // Estadísticas
         let stats = {
@@ -469,161 +388,139 @@
         let difficulty = {
             level: 1,
             speedMultiplier: 1.0,
-            spawnRate: 35,
+            spawnRate: 30,
             asteroidCount: 1
         };
 
         let asteroidSpeed = 2.5;
         const baseAsteroidSpeed = 2.5;
-        const asteroidSizes = [10, 15, 20, 25];
+        const asteroidSizes = [12, 18, 24, 30];
         const bulletSpeed = 8;
-        const bulletRadius = 3;
+        const bulletRadius = 4;
         const shootCooldown = 6;
         let shootTimer = 0;
         const missileSpeed = 12;
-        const missileRadius = 8;
-        const missileExplosionRadius = 80;
-        const powerUpSpawnRate = 250;
+        const missileRadius = 10;
+        const missileExplosionRadius = 90;
+        const powerUpSpawnRate = 200;
         const powerUpTypes = ['triple', 'missile'];
         const powerUpColors = {
             triple: '#ffaa00',
             missile: '#ff6b6b'
         };
 
-        // Controles táctiles
-        joystickArea.addEventListener('touchstart', handleTouchStart);
-        joystickArea.addEventListener('touchmove', handleTouchMove);
-        joystickArea.addEventListener('touchend', handleTouchEnd);
-        joystickArea.addEventListener('touchcancel', handleTouchEnd);
-
-        function handleTouchStart(e) {
-            e.preventDefault();
-            touchActive = true;
-            updateJoystick(e.touches[0]);
+        // Inicializar sensores
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', handleOrientation);
+            deviceOrientationSupported = true;
         }
 
-        function handleTouchMove(e) {
-            e.preventDefault();
-            if (touchActive) {
-                updateJoystick(e.touches[0]);
+        function handleOrientation(event) {
+            if (!gameRunning) return;
+            
+            // beta: inclinación hacia los lados (-180 a 180)
+            if (event.beta !== null) {
+                beta = event.beta;
+                
+                // Aplicar calibración
+                let calibratedBeta = beta - calibrationOffset;
+                
+                // Mapear la inclinación a posición en el canvas
+                // Limitar a ±30 grados para control suave
+                const maxTilt = 30;
+                const limitedBeta = Math.max(-maxTilt, Math.min(maxTilt, calibratedBeta));
+                
+                // Convertir grados a posición en pantalla
+                const targetX = (limitedBeta + maxTilt) / (maxTilt * 2) * canvas.width;
+                
+                // Movimiento suave
+                player.x += (targetX - player.x) * 0.1;
+                player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
             }
         }
 
-        function handleTouchEnd(e) {
+        // Calibrar posición neutral
+        calibrateBtn.addEventListener('click', calibrate);
+        calibrateBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            touchActive = false;
-            joystickVector = { x: 0, y: 0 };
-            joystick.style.transform = 'translate(0px, 0px)';
-        }
+            calibrate();
+        });
 
-        function updateJoystick(touch) {
-            const rect = joystickArea.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+        function calibrate() {
+            calibrationOffset = beta;
             
-            let dx = touch.clientX - centerX;
-            let dy = touch.clientY - centerY;
+            // Feedback visual
+            calibrateBtn.style.background = '#00ffaa';
+            calibrateBtn.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                calibrateBtn.style.background = 'rgba(74,111,165,0.9)';
+                calibrateBtn.style.transform = 'scale(1)';
+            }, 200);
             
-            // Limitar al radio del joystick
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const maxDistance = rect.width / 2 - 25;
-            
-            if (distance > maxDistance) {
-                dx = (dx / distance) * maxDistance;
-                dy = (dy / distance) * maxDistance;
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
             }
-            
-            joystickVector.x = dx / maxDistance;
-            joystickVector.y = dy / maxDistance;
-            
-            joystick.style.transform = `translate(${dx}px, ${dy}px)`;
         }
 
-        // Botones táctiles
-        shootBtn.addEventListener('touchstart', (e) => {
+        // Disparo al tocar la pantalla
+        touchArea.addEventListener('touchstart', (e) => {
             e.preventDefault();
             shooting = true;
+            
+            // Ocultar hint después del primer disparo
+            shootHint.style.opacity = '0.5';
         });
         
-        shootBtn.addEventListener('touchend', (e) => {
+        touchArea.addEventListener('touchend', (e) => {
             e.preventDefault();
             shooting = false;
         });
         
-        shootBtn.addEventListener('touchcancel', (e) => {
+        touchArea.addEventListener('touchcancel', (e) => {
             e.preventDefault();
             shooting = false;
-        });
-
-        missileBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (player.missiles > 0 && missileReady && gameRunning) {
-                launchMissile();
-                player.missiles--;
-                stats.missilesLaunched++;
-                missilesElement.textContent = `🚀 ${player.missiles}`;
-                missileReady = false;
-                missileCooldown = missileMaxCooldown;
-                
-                // Feedback háptico (vibración) si está disponible
-                if (navigator.vibrate) {
-                    navigator.vibrate(50);
-                }
-            }
         });
 
         function updateShotMode() {
             if (player.powerLevel === 0) {
                 player.shotMode = 'simple';
-                currentMode.textContent = 'SIMPLE';
-                currentMode.style.borderColor = '#4a6fa5';
-                currentMode.style.color = '#4a6fa5';
+                modeIndicator.textContent = 'MODO SIMPLE';
+                modeIndicator.style.borderColor = '#4a6fa5';
+                modeIndicator.style.color = '#4a6fa5';
             } else if (player.powerLevel <= 2) {
                 player.shotMode = 'double';
-                currentMode.textContent = 'DOBLE';
-                currentMode.style.borderColor = '#00ffaa';
-                currentMode.style.color = '#00ffaa';
+                modeIndicator.textContent = 'MODO DOBLE';
+                modeIndicator.style.borderColor = '#00ffaa';
+                modeIndicator.style.color = '#00ffaa';
             } else if (player.powerLevel <= 4) {
                 player.shotMode = 'triple';
-                currentMode.textContent = 'TRIPLE';
-                currentMode.style.borderColor = '#ffaa00';
-                currentMode.style.color = '#ffaa00';
+                modeIndicator.textContent = 'MODO TRIPLE';
+                modeIndicator.style.borderColor = '#ffaa00';
+                modeIndicator.style.color = '#ffaa00';
             } else {
                 player.shotMode = 'burst';
-                currentMode.textContent = 'RÁFAGA';
-                currentMode.style.borderColor = '#ff4444';
-                currentMode.style.color = '#ff4444';
+                modeIndicator.textContent = 'MODO RÁFAGA 🔥';
+                modeIndicator.style.borderColor = '#ff4444';
+                modeIndicator.style.color = '#ff4444';
             }
             
-            powerModeInfo.textContent = currentMode.textContent;
+            powerLevelElement.textContent = `⚡ NIVEL ${player.powerLevel}`;
+            
+            // Cambiar color del nivel según poder
+            if (player.powerLevel <= 2) {
+                powerLevelElement.style.borderColor = '#4a6fa5';
+                powerLevelElement.style.color = '#4a6fa5';
+            } else if (player.powerLevel <= 4) {
+                powerLevelElement.style.borderColor = '#ffaa00';
+                powerLevelElement.style.color = '#ffaa00';
+            } else {
+                powerLevelElement.style.borderColor = '#ff4444';
+                powerLevelElement.style.color = '#ff4444';
+            }
         }
 
         function addPowerLevel(amount) {
             player.powerLevel = Math.min(player.powerLevel + amount, player.maxPowerLevel);
-            updatePowerUI();
-        }
-
-        function updatePowerUI() {
-            powerLevelElement.textContent = `⚡ ${player.powerLevel}/${player.maxPowerLevel}`;
-            document.getElementById('powerLevelText').textContent = `${player.powerLevel}/${player.maxPowerLevel}`;
-            
-            powerSegments.forEach((segment, index) => {
-                if (index < player.powerLevel) {
-                    segment.classList.add('active');
-                    
-                    if (player.powerLevel <= 2) {
-                        segment.style.background = '#4a6fa5';
-                    } else if (player.powerLevel <= 4) {
-                        segment.style.background = '#ffaa00';
-                    } else {
-                        segment.style.background = '#ff4444';
-                    }
-                } else {
-                    segment.classList.remove('active');
-                    segment.style.background = '#4a6fa5';
-                }
-            });
-            
             updateShotMode();
         }
 
@@ -635,6 +532,11 @@
                 speed: missileSpeed,
                 exploded: false
             });
+            
+            // Disparar misil también da un pequeño feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(30);
+            }
         }
 
         function spawnPowerUp() {
@@ -647,11 +549,10 @@
             powerUps.push({
                 x: x,
                 y: y,
-                radius: 15,
+                radius: 18,
                 type: type,
                 speed: 2,
-                angle: 0,
-                pulse: 0
+                angle: 0
             });
         }
 
@@ -667,7 +568,7 @@
                     x: x,
                     y: -radius - Math.random() * 100,
                     radius: radius,
-                    speed: asteroidSpeed * difficulty.speedMultiplier + Math.random() * 2
+                    speed: asteroidSpeed * difficulty.speedMultiplier + Math.random() * 1.5
                 });
             }
         }
@@ -678,19 +579,19 @@
                     bullets.push({ x: player.x, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
                     break;
                 case 'double':
-                    bullets.push({ x: player.x - 8, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
-                    bullets.push({ x: player.x + 8, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
+                    bullets.push({ x: player.x - 10, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
+                    bullets.push({ x: player.x + 10, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
                     break;
                 case 'triple':
                     bullets.push({ x: player.x, y: player.y - player.radius, radius: bulletRadius, speed: bulletSpeed });
-                    bullets.push({ x: player.x - 12, y: player.y - player.radius + 5, radius: bulletRadius, speed: bulletSpeed });
-                    bullets.push({ x: player.x + 12, y: player.y - player.radius + 5, radius: bulletRadius, speed: bulletSpeed });
+                    bullets.push({ x: player.x - 15, y: player.y - player.radius + 8, radius: bulletRadius, speed: bulletSpeed });
+                    bullets.push({ x: player.x + 15, y: player.y - player.radius + 8, radius: bulletRadius, speed: bulletSpeed });
                     break;
                 case 'burst':
                     for (let i = -2; i <= 2; i++) {
                         bullets.push({ 
-                            x: player.x + i * 10, 
-                            y: player.y - player.radius - Math.abs(i) * 3, 
+                            x: player.x + i * 12, 
+                            y: player.y - player.radius - Math.abs(i) * 4, 
                             radius: bulletRadius, 
                             speed: bulletSpeed 
                         });
@@ -698,26 +599,25 @@
                     break;
             }
             
-            // Vibración al disparar (solo en ráfaga)
+            // Vibración ligera al disparar
             if (player.shotMode === 'burst' && navigator.vibrate) {
-                navigator.vibrate(20);
+                navigator.vibrate(15);
             }
         }
 
         function updateDifficulty() {
-            const newLevel = Math.floor(score / 500) + 1;
+            const newLevel = Math.floor(score / 300) + 1;
             
             if (newLevel !== difficulty.level) {
                 difficulty.level = newLevel;
-                difficulty.speedMultiplier = 1.0 + (newLevel - 1) * 0.2;
-                difficulty.spawnRate = Math.max(15, 35 - (newLevel - 1) * 3);
+                difficulty.speedMultiplier = 1.0 + (newLevel - 1) * 0.15;
+                difficulty.spawnRate = Math.max(18, 30 - (newLevel - 1) * 2);
                 difficulty.asteroidCount = Math.min(3, Math.floor(newLevel / 2) + 1);
                 
                 asteroidSpeed = baseAsteroidSpeed * difficulty.speedMultiplier;
                 
-                const percentage = Math.min(100, ((newLevel - 1) * 20));
-                difficultyIndicator.style.left = percentage + '%';
-                difficultyPercentage.textContent = percentage + '%';
+                const percentage = Math.min(100, ((newLevel - 1) * 15));
+                difficultyFill.style.width = percentage + '%';
                 
                 stats.maxDifficulty = Math.max(stats.maxDifficulty, difficulty.level);
             }
@@ -725,12 +625,6 @@
 
         function update() {
             if (!gameRunning) return;
-
-            // Mover jugador con joystick
-            if (touchActive) {
-                player.x += joystickVector.x * 8;
-                player.x = Math.max(player.radius, Math.min(canvas.width - player.radius, player.x));
-            }
 
             updateDifficulty();
 
@@ -742,7 +636,7 @@
                 }
             }
 
-            // Disparar
+            // Disparar al tocar
             if (shooting && shootTimer <= 0) {
                 shootBullet();
                 shootTimer = shootCooldown;
@@ -835,6 +729,7 @@
                     if (distance < missile.radius + asteroid.radius) {
                         missileExploded = true;
                         
+                        // Explosión del misil
                         for (let k = asteroids.length - 1; k >= 0; k--) {
                             const nearbyAsteroid = asteroids[k];
                             const blastDx = missile.x - nearbyAsteroid.x;
@@ -876,11 +771,18 @@
                     if (powerUp.type === 'triple') {
                         addPowerLevel(1);
                         stats.powerUpsCollected++;
+                        
+                        // Ganar misiles al subir de nivel
+                        if (player.powerLevel % 2 === 0) {
+                            player.missiles++;
+                            missilesElement.textContent = `🚀 ${player.missiles}`;
+                        }
+                        
                         if (navigator.vibrate) {
                             navigator.vibrate(50);
                         }
                     } else if (powerUp.type === 'missile') {
-                        player.missiles += 3;
+                        player.missiles += 2;
                         missilesElement.textContent = `🚀 ${player.missiles}`;
                     }
                     
@@ -900,9 +802,10 @@
                     player.lives--;
                     livesElement.textContent = `❤️ ${player.lives}`;
                     
+                    // Reducir poder al recibir daño
                     if (player.powerLevel > 0) {
                         player.powerLevel = Math.max(0, player.powerLevel - 2);
-                        updatePowerUI();
+                        updateShotMode();
                     }
                     
                     if (navigator.vibrate) {
@@ -921,16 +824,17 @@
 
             // Fondo estrellado
             ctx.fillStyle = 'white';
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 30; i++) {
                 const x = (Math.sin(i + frames * 0.001) * canvas.width) % canvas.width;
                 const y = (Math.cos(i + frames * 0.002) * canvas.height) % canvas.height;
-                ctx.fillRect(x, y, 1, 1);
+                ctx.fillRect(x, y, 2, 2);
             }
 
-            // Jugador
+            // Jugador - NAVE MÁS GRANDE
             ctx.save();
             ctx.translate(player.x, player.y);
             
+            // Efecto glow según nivel
             if (player.powerLevel > 4) {
                 ctx.shadowColor = '#ff4444';
                 ctx.shadowBlur = 30;
@@ -942,20 +846,22 @@
                 ctx.shadowBlur = 15;
             }
             
+            // Cuerpo principal
             ctx.fillStyle = '#4a6fa5';
             ctx.beginPath();
             ctx.moveTo(0, -player.radius);
-            ctx.lineTo(-player.radius, player.radius - 5);
-            ctx.lineTo(0, player.radius - 10);
-            ctx.lineTo(player.radius, player.radius - 5);
+            ctx.lineTo(-player.radius * 0.8, player.radius * 0.7);
+            ctx.lineTo(0, player.radius * 0.4);
+            ctx.lineTo(player.radius * 0.8, player.radius * 0.7);
             ctx.closePath();
             ctx.fill();
             
+            // Motor
             ctx.fillStyle = player.powerLevel > 4 ? '#ff4444' : (player.powerLevel > 2 ? '#ffaa00' : '#00ffaa');
             ctx.beginPath();
-            ctx.moveTo(-8, player.radius - 5);
-            ctx.lineTo(0, player.radius + 5 + player.powerLevel);
-            ctx.lineTo(8, player.radius - 5);
+            ctx.moveTo(-8, player.radius * 0.5);
+            ctx.lineTo(0, player.radius * 0.9);
+            ctx.lineTo(8, player.radius * 0.5);
             ctx.fill();
             
             ctx.restore();
@@ -969,9 +875,10 @@
                 ctx.beginPath();
                 ctx.arc(0, 0, asteroid.radius, 0, Math.PI * 2);
                 const speedFactor = asteroid.speed / baseAsteroidSpeed;
-                ctx.fillStyle = `rgb(${100 + speedFactor * 50}, ${80 + speedFactor * 30}, ${80})`;
+                ctx.fillStyle = `rgb(${120 + speedFactor * 50}, ${90 + speedFactor * 30}, ${90})`;
                 ctx.fill();
                 
+                // Cráteres
                 ctx.fillStyle = '#5a5a5a';
                 ctx.beginPath();
                 ctx.arc(-asteroid.radius/3, -asteroid.radius/3, asteroid.radius/4, 0, Math.PI * 2);
@@ -999,17 +906,17 @@
                 ctx.fill();
                 
                 ctx.strokeStyle = '#ffaa00';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 4;
                 ctx.beginPath();
-                ctx.moveTo(0, 5);
-                ctx.lineTo(0, 20);
+                ctx.moveTo(0, 6);
+                ctx.lineTo(0, 25);
                 ctx.stroke();
                 
                 ctx.fillStyle = '#ff4444';
                 ctx.beginPath();
-                ctx.moveTo(-6, 0);
-                ctx.lineTo(0, 10);
-                ctx.lineTo(6, 0);
+                ctx.moveTo(-8, 0);
+                ctx.lineTo(0, 12);
+                ctx.lineTo(8, 0);
                 ctx.fill();
                 
                 ctx.restore();
@@ -1017,28 +924,28 @@
 
             // Potenciadores
             powerUps.forEach(powerUp => {
-                const pulse = Math.sin(frames * 0.1) * 3;
+                const pulse = Math.sin(frames * 0.1) * 4;
                 
                 ctx.save();
                 ctx.translate(powerUp.x, powerUp.y);
                 ctx.rotate(powerUp.angle);
                 
                 ctx.shadowColor = powerUpColors[powerUp.type];
-                ctx.shadowBlur = 20;
+                ctx.shadowBlur = 25;
                 ctx.fillStyle = powerUpColors[powerUp.type];
                 ctx.beginPath();
                 ctx.arc(0, 0, powerUp.radius + pulse, 0, Math.PI * 2);
                 ctx.fill();
                 
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 15;
                 ctx.fillStyle = 'white';
                 ctx.beginPath();
-                ctx.arc(0, 0, powerUp.radius - 3, 0, Math.PI * 2);
+                ctx.arc(0, 0, powerUp.radius - 4, 0, Math.PI * 2);
                 ctx.fill();
                 
                 ctx.shadowBlur = 0;
                 ctx.fillStyle = powerUpColors[powerUp.type];
-                ctx.font = 'bold 16px Arial';
+                ctx.font = 'bold 22px Arial';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(powerUp.type === 'triple' ? '⚡' : '🚀', 0, 0);
@@ -1054,9 +961,10 @@
             
             finalScoreElement.textContent = `Puntuación: ${score}`;
             finalStatsElement.innerHTML = `
-                <div>Nivel máximo: ${stats.maxDifficulty}</div>
-                <div>Asteroides: ${stats.asteroidsDestroyed}</div>
-                <div>Misiles: ${stats.missilesLaunched}</div>
+                <div>🏆 Nivel máximo: ${stats.maxDifficulty}</div>
+                <div>💥 Asteroides: ${stats.asteroidsDestroyed}</div>
+                <div>🚀 Misiles: ${stats.missilesLaunched}</div>
+                <div>⚡ Potenciadores: ${stats.powerUpsCollected}</div>
             `;
             
             gameOverElement.style.display = 'block';
@@ -1069,7 +977,7 @@
         function restart() {
             player.lives = 3;
             player.x = canvas.width / 2;
-            player.y = canvas.height - 70;
+            player.y = canvas.height - 120;
             player.missiles = 0;
             player.powerLevel = 0;
             
@@ -1087,7 +995,7 @@
             difficulty = {
                 level: 1,
                 speedMultiplier: 1.0,
-                spawnRate: 35,
+                spawnRate: 30,
                 asteroidCount: 1
             };
             asteroidSpeed = baseAsteroidSpeed;
@@ -1099,19 +1007,22 @@
                 powerUpsCollected: 0
             };
             
-            scoreElement.textContent = '🎯 0';
             livesElement.textContent = '❤️ 3';
             missilesElement.textContent = '🚀 0';
-            difficultyIndicator.style.left = '0%';
-            difficultyPercentage.textContent = '0%';
+            scoreElement.textContent = '🎯 0';
+            difficultyFill.style.width = '0%';
             
-            updatePowerUI();
+            updateShotMode();
             gameRunning = true;
             gameOverElement.style.display = 'none';
+            shootHint.style.opacity = '1';
+            
+            // Recalibrar
+            setTimeout(calibrate, 500);
         }
 
         // Inicializar
-        updatePowerUI();
+        updateShotMode();
         restartBtn.addEventListener('click', restart);
         restartBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
@@ -1127,12 +1038,20 @@
 
         gameLoop();
 
-        // Prevenir scroll en el móvil
+        // Prevenir scroll
         document.body.addEventListener('touchmove', (e) => {
             if (e.target.closest('#gameContainer')) {
                 e.preventDefault();
             }
         }, { passive: false });
+
+        // Ocultar hint después de un tiempo
+        setTimeout(() => {
+            if (shootHint) {
+                shootHint.style.transition = 'opacity 1s';
+                shootHint.style.opacity = '0.3';
+            }
+        }, 5000);
     </script>
 </body>
 </html>
